@@ -1,0 +1,14 @@
+[rc0] op=dgemv N=128 iter=1000 launch=1 ... GFLOPS=0.02
+[rc0] op=dgemv N=256 iter=500 launch=1 ... GFLOPS=0.03
+[rc0] op=dgemv N=512 iter=200 launch=1 ... GFLOPS=0.03
+[rc0] op=dgemv N=1024 iter=100 launch=1 ... GFLOPS=0.18
+[rc0] op=dgemv N=2048 iter=50 launch=1 ... GFLOPS=0.18
+[rc0] op=dgemv N=4096 iter=20 launch=1 ... GFLOPS=0.18
+[rc0] op=dgemv N=8192 iter=10 launch=1 ... GFLOPS=0.18
+[opt] op=dgemv N=128 iter=1000 launch=1 ... GFLOPS=0.02
+[opt] op=dgemv N=256 iter=500 launch=1 ... GFLOPS=0.02
+[opt] op=dgemv N=512 iter=200 launch=1 ... GFLOPS=0.02
+[opt] op=dgemv N=1024 iter=100 launch=1 ... GFLOPS=0.11
+[opt] op=dgemv N=2048 iter=50 launch=1 ... GFLOPS=0.11
+[opt] op=dgemv N=4096 iter=20 launch=1 ... GFLOPS=0.11
+[opt] op=dgemv N=8192 iter=10 launch=1 ... GFLOPS=0.11

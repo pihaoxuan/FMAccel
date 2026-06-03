@@ -1,0 +1,5 @@
+# use-opt.sh
+#!/bin/bash
+echo -1 > /proc/sys/fs/binfmt_misc/qemu_x86_64 2>/dev/null
+echo ':qemu_x86_64:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x3e\x00:\xff\xff\xff\xff\xff\xfe\xfe\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/home/pihaoxuan/qemu-11.0.0-opt/build/qemu-x86_64:F' > /proc/sys/fs/binfmt_misc/register
+echo "已切换到OPT QEMU"

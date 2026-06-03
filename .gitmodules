@@ -1,0 +1,6 @@
+[submodule "qemu-count"]
+	path = qemu-count
+	url = git@github.com:pihaoxuan/qemu-count.git
+[submodule "qemu-opt"]
+	path = qemu-opt
+	url = git@github.com:pihaoxuan/qemu-opt.git

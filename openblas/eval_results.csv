@@ -1,0 +1,8 @@
+Engine,N,Time_s,GFLOPS
+native-loongarch64,128,0.00015,28.62
+native-loongarch64,256,0.00102,32.75
+native-loongarch64,512,0.00777,34.55
+native-loongarch64,1024,0.06157,34.88
+native-loongarch64,2048,0.51102,33.62
+native-loongarch64,4096,4.09052,33.60
+native-loongarch64,8192,33.07196,33.25
