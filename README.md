@@ -20,7 +20,8 @@ FMAccel/
 ├── qemu-opt/              # QEMU fork #2 — FMA acceleration build
 ├── openblas/              # LoongArch-NATIVE BLAS benchmarks (hardware ceiling)
 └── qemu-req/              # x86-under-QEMU evaluation harness (rc0 vs opt)
-    └── openblas/          # x86-compiled BLAS executables, run through QEMU
+    ├── openblas/          # x86-compiled BLAS executables, run through QEMU
+    └── test_mxcsr/        # MXCSR correctness tests (compile on x86, run through QEMU)
 ```
 
 ### Root files / 根目录文件
@@ -49,7 +50,7 @@ Custom / modified files in each fork:
 |------|--------|
 | `target/i386/tcg/fma_detector.{c,h}` | Loads `fma_profile.txt` into a `GHashTable` at startup (`init_gemm_detector`, `getMeta`); declares the execution counters. |
 | `target/i386/tcg/translate.c` | Interception inserted at the top of `i386_tr_translate_insn`: on a profile hit, manually decode the VEX prefix and dispatch to the custom FMA helper, then end the TB; on a miss, fall through to QEMU's normal decoder. |
-| `target/i386/tcg/misc_helper.c` | Defines `helper_custom_fma_vector_reg` / `helper_custom_fma_vector_mem`. In **qemu-opt** these call `__lasx_xvfmadd_d/s` (256-bit / YMM) and `__lsx_vfmadd_d/s` (128-bit / XMM); memory operands use `cpu_ldq_data_ra(env, vaddr, GETPC())` for fault-safe loads. |
+| `target/i386/tcg/misc_helper.c` | Defines `helper_custom_fma_vector_reg` / `helper_custom_fma_vector_mem`. In **qemu-opt** these call `__lasx_xvfmadd_d/s` (256-bit / YMM) and `__lsx_vfmadd_d/s` (128-bit / XMM); memory operands use `cpu_ldq_data_ra(env, vaddr, GETPC())` for fault-safe loads. An MXCSR guard at the top of each helper checks `env->mxcsr & 0xE040`; non-default FP environments (RC≠RN, FTZ, or DAZ) fall back to `float64_muladd()`/`float32_muladd()` via `env->sse_status`. |
 | `target/i386/helper.h` | Declares the custom FMA helpers (and `count_total_insn` in qemu-count). |
 | `linux-user/syscall.c` | (qemu-count) calls `print_fma_ratio()` on `TARGET_NR_exit_group`. |
 | `target/i386/tcg/meson.build` | Adds `fma_detector.c` to the TCG build. |
@@ -80,6 +81,7 @@ This is the most important distinction in the repo — the two directories hold 
 | `runAndCaculateTime.sh` | Times a single command (`date +%s.%N` before/after) and prints elapsed seconds. Used for SPEC benchmarks. |
 | `batch-time.sh` | Iterates benchmark subdirectories, runs `detector.py` to pre-generate the profile, then times each via `runAndCaculateTime.sh` and prints a summary. |
 | `time-command-results.csv` | SPEC CPU 2017 timing results (rc0 vs opt). |
+| `test_mxcsr/` | **MXCSR correctness tests.** `test_mxcsr_guard.c`: single-case check that the MXCSR guard fires correctly under round-toward-zero. `test_mxcsr_fuzz.c`: 40,000-case rounding-mode fuzz test across all four IEEE 754 rounding modes (RN / R−∞ / R+∞ / RZ); confirmed result: 14,840/40,000 fail without guard, 0/40,000 with guard. Compile on x86 (`-march=haswell -mavx2 -mfma -fcf-protection=none -static`), run through `qemu-opt` via `binfmt_misc`. |
 
 ---
 
