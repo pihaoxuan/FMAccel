@@ -1,0 +1,12 @@
+[submodule "qemu-opt-loongarch"]
+	path = qemu-opt-loongarch
+	url = https://github.com/pihaoxuan/qemu-opt-loongarch.git
+[submodule "qemu-opt-ARMv8"]
+	path = qemu-opt-ARMv8
+	url = https://github.com/pihaoxuan/qemu-opt-ARMv8.git
+[submodule "qemu-opt-riscv"]
+	path = qemu-opt-riscv
+	url = https://github.com/pihaoxuan/qemu-opt-riscv.git
+[submodule "qemu-count"]
+	path = qemu-count
+	url = https://github.com/pihaoxuan/qemu-count.git
